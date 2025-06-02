@@ -13,22 +13,17 @@ class BemLocavelController extends Controller
      */
     public function index()
     {
-        // Logic to list all locatable assets
+         
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     *
-    public function create()
-    {
-        // Logic to show form for creating a new locatable asset
-    }
-     */
+    
 
-    /**
-     * Store a newly created resource in storage.
+    public function create(){
+
+    }
+  
+   
+     /* Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

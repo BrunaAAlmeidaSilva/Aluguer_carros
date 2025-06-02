@@ -45,4 +45,40 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+     /**
+     * Um usuário pode ter várias reservas
+     */
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class);
+    }
+
+    /**
+     * Reservas ativas do usuário
+     */
+    public function reservasAtivas()
+    {
+        return $this->hasMany(Reserva::class)->whereIn('status', ['confirmada', 'ativa']);
+    }
+
+    /**
+     * Histórico de reservas do usuário
+     */
+    public function historicoReservas()
+    {
+        return $this->hasMany(Reserva::class)->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Pagamentos do usuário através das reservas
+     */
+    public function pagamentos()
+    {
+        return $this->hasManyThrough(Pagamento::class, Reserva::class);
+    }
 }
+
+
+
+
