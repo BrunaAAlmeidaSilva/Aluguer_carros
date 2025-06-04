@@ -1,36 +1,87 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ANURB Cars S.A.</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <style>
+        .custom-background {
+         background-color: #547326;
+        }
+        .navbar {
+         background-color: #ffffff !important; 
+        }
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+        .car-image {
+            width: 60%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+        }
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+        .carro-image  {
+            width: 5%;
+            height: auto;
+            display: block;
+            padding: 10px;
+        
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .a{
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            color: #547326;
+        }
+    </style>
+</head>
+<body>
+<body class="custom-background">
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+    <span>ANURB Cars S.A.      Bem-Vindo</span>
+    <img src="Imagens/car.png" class="carro-image ">
+    <a href="https://www.flaticon.com/free-icons/car" title="car icons"></a>
+</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Sobre</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">LogIn</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Registar</a>
+                </li>
+            </ul>
         </div>
-    </body>
+    </div>
+</nav>
+
+
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p><a href="#">Mais Informação</a> | <a href="#">Contactos</a> | <a href="#">Informação Legal</a></p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

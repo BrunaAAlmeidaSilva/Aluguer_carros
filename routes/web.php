@@ -1,14 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{
-    DashboardController,
-    HomeController,
-    BemLocavelController,
-    UserController,
-    ReservaController,
-    PagamentoController
-};
+use App\Http\Controllers\{DashboardController,HomeController,BemLocavelController,
+    UserController,ReservaController,PagamentoController};
+
+
+
 
 // Página inicial: Dashboard
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -19,7 +16,28 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 // Página Bem Locavel
 Route::get('/bens_locaveis', [BemLocavelController::class, 'index'])->name('bens_locaveis.index');
 Route::get('/bens_locaveis/search', [BemLocavelController::class, 'search'])->name('bens_locaveis.search');
-Route::get('/bens_locaveis/{bem}', [BemLocavelController::class, 'show'])->name('bens_locaveis.show');
+Route::get('/bens-locaveis/{id}', [BemLocavelController::class, 'show'])->name('bens.locaveis.show');
+Route::get('/bens-locaveis/{id}/disponibilidade', [BemLocavelController::class, 'verificarDisponibilidade'])->name('bens.locaveis.disponibilidade');
+Route::get('/bens-locaveis/localizacao/{cidade}/{filial?}', [BemLocavelController::class, 'porLocalizacao'])->name('bens.locaveis.localizacao');
+Route::get('/bens-locaveis/estatisticas', [BemLocavelController::class, 'estatisticas'])->name('bens.locaveis.estatisticas');
+Route::post('/bens-locaveis/processar-filtros', [BemLocavelController::class, 'processarFiltros'])->name('bens.locaveis.processar_filtros');
+Route::get('/bens-locaveis/detalhes/{id}', [BemLocavelController::class, 'detalhes'])->name('bens.locaveis.detalhes');
+
+
+// Página principal da grid de veículos
+Route::get('/carros-escolha', [BemLocavelController::class, 'carrosEscolha'])->name('carrosEscolha.index');
+
+
+
+//Route::get('/carros', [BemLocavelController::class, 'index'])->name('bens.index');
+// Página de detalhes de um veículo
+Route::get('/carros/{id}', [BemLocavelController::class, 'show'])->name('carros.show');
+// Buscar veículos com filtros
+Route::get('/carros/search', [BemLocavelController::class, 'search'])->name('carros.search');
+
+//Route::get('/reservas/{bem}', [ReservaController::class, 'create'])->name('reservas.create');
+Route::get('/reservas/{bem}', [ReservaController::class, 'create'])->name('reservas.create');
+
 
 // Rotas de autenticação e perfil
 require __DIR__.'/auth.php';
@@ -35,10 +53,11 @@ Route::middleware('auth')->group(function () {
     // Reservas
     Route::prefix('reservas')->name('reservas.')->group(function () {
         Route::get('/', [ReservaController::class, 'index'])->name('index');
-        Route::get('/criar/{bem}', [ReservaController::class, 'create'])->name('create');
+        
         Route::post('/store', [ReservaController::class, 'store'])->name('store');
         Route::get('/{reserva}', [ReservaController::class, 'show'])->name('show');
         Route::patch('/{reserva}/cancelar', [ReservaController::class, 'cancel'])->name('cancel');
+        
     });
 
     // Pagamentos

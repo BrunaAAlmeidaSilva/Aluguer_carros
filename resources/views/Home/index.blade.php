@@ -162,13 +162,13 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Sobre</a>
+                    <a class="nav-link" id="sobre-link" href="#sobre">Sobre</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">LogIn</a>
+                    <a class="nav-link" id="login-link" href="{{ route('login') }}">LogIn</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Registar</a>
+                    <a class="nav-link" id="register-link" href="{{ route('register') }}">Registar</a>
                 </li>
             </ul>
         </div>
@@ -223,7 +223,9 @@
             </div>
             <div class="row">
                 <div class="col-12 text-center">
-                    <button type="button" class="btn btn-reserve"><i class="bi bi-search"></i> Ver Disponibilidade</button>
+                     <a href="{{ route('carrosEscolha.index') }}" class="btn btn-reserve">
+    <i class="bi bi-search"></i> Ver Disponibilidade
+</a>
                 </div>
             </div>
         </div>
@@ -324,7 +326,23 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sobreLink = document.getElementById('sobre-link');
+        if (sobreLink) {
+            sobreLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Sobre a ANURB Cars S.A.',
+                    html: `<p class='lead'>Na ANURB Cars S.A., oferecemos uma experiência de aluguer de veículos premium com a melhor frota de carros disponível no mercado.<br>Os nossos veículos são cuidadosamente selecionados e mantidos para garantir a sua segurança, conforto e satisfação durante toda a viagem.</p><p>Seja para uma viagem de negócios, férias em família ou uma ocasião especial, temos o veículo perfeito para as suas necessidades.<br>Todos os nossos carros passam por inspeções rigorosas e são equipados com as mais recentes tecnologias de segurança e conforto.</p>`,
+                    icon: 'info',
+                    confirmButtonText: 'Fechar'
+                });
+            });
+        }
+    });
+    
     // Set minimum datetime to current time
     const now = new Date();
     const currentDateTime = now.toISOString().slice(0, 16);

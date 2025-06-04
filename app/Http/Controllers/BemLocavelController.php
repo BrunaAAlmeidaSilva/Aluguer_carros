@@ -1,89 +1,109 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\BemLocavel;
+use App\Models\Marca;
+use App\Models\Localizacao;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use Carbon\Carbon;
+use App\Http\Requests\BemLocavelRequest;
+use App\Http\Requests\BuscarBemLocavelRequest;
+use App\Http\Requests\VerificarDisponibilidadeRequest;
+use App\Http\Requests\ListarPorLocalizacaoRequest;
+use App\Http\Requests\EstatisticasRequest;
+use App\Http\Requests\ProcessarFiltrosRequest;
+use App\Http\Requests\DetalhesBemLocavelRequest;
+
 
 class BemLocavelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    // Exibir listagem de bens locáveis
+    public function index(Request $request): View
     {
-         
+        $filtros = $this->processarFiltros($request);
+        $bensLocaveis = BemLocavel::buscarComFiltros($filtros)
+            ->paginate(12)
+            ->appends($request->query());
+
+        // Dados para filtros
+        $marcas = Marca::orderBy('nome')->get();
+        $localizacoes = Localizacao::select('cidade', 'filial')
+            ->distinct()
+            ->orderBy('cidade')
+            ->orderBy('filial')
+            ->get();
+        $precoMinimo = BemLocavel::min('preco_diario') ?? 0;
+        $precoMaximo = BemLocavel::max('preco_diario') ?? 1000;
+
+        return view('bemLocavel.index', compact(
+            'bensLocaveis', 'marcas', 'localizacoes', 
+            'precoMinimo', 'precoMaximo', 'filtros'
+        ));
     }
 
-    
-
-    public function create(){
-
-    }
-  
-   
-     /* Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    // Buscar veículos com filtros
+    public function search(Request $request): View
     {
-        // Logic to store a new locatable asset
+        $filtros = $this->processarFiltros($request);
+        $bensLocaveis = BemLocavel::buscarComFiltros($filtros)->paginate(12);
+
+        return view('bemLocavel.resultados', compact('bensLocaveis', 'filtros'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    // Verificar disponibilidade de um veículo
+    public function verificarDisponibilidade(Request $request, $id): View
     {
-         //
+        $request->validate([
+            'data_inicio' => 'required|date|after_or_equal:today',
+            'data_fim' => 'required|date|after:data_inicio'
+        ]);
+
+        $bemLocavel = BemLocavel::findOrFail($id);
+        $disponivel = $bemLocavel->estaDisponivel($request->data_inicio, $request->data_fim);
+        $precoTotal = $disponivel ? $bemLocavel->calcularPrecoTotal($request->data_inicio, $request->data_fim) : null;
+
+        return view('bemLocavel.disponibilidade', compact(
+            'bemLocavel', 'disponivel', 'precoTotal'
+        ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    // Detalhes do veículo
+    public function show($id): View
     {
-        // Logic to show form for editing a locatable asset
+        $bemLocavel = BemLocavel::with(['marca', 'localizacoes', 'caracteristicas'])
+            ->findOrFail($id);
+
+        return view('bemLocavel.show', compact('bemLocavel'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    // Listar veículos por localização
+    public function porLocalizacao($cidade, $filial = null): View
     {
-        // Logic to update a locatable asset
+        $veiculos = BemLocavel::porLocalizacao($cidade, $filial)
+            ->emManutencao(false)
+            ->with(['marca', 'localizacoes'])
+            ->get();
+
+        return view('bemLocavel.localizacao', compact('veiculos', 'cidade', 'filial'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    // Estatísticas do catálogo
+    public function estatisticas(): View
     {
-        // Logic to delete a locatable asset
+        $stats = [
+            'total_veiculos' => BemLocavel::count(),
+            'disponiveis' => BemLocavel::emManutencao(false)->count(),
+            'em_manutencao' => BemLocavel::where('manutencao', true)->count(),
+            'preco_medio' => BemLocavel::avg('preco_diario'),
+        ];
+
+        return view('bemLocavel.estatisticas', compact('stats'));
     }
 
-    public function search(Request $request)
-    {
-        // Logic to search for locatable assets based on request parameters
-    }
-    public function filter(Request $request)
-    {
-        // Logic to filter locatable assets based on request parameters
-    }
+    public function carrosEscolha()
+{
+    $bensLocaveis = \App\Models\BemLocavel::with('marca')->emManutencao(false)->paginate(12);
+    return view('CarrosEscolha.index', compact('bensLocaveis'));
+}
 }
