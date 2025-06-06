@@ -63,7 +63,7 @@
                     <a class="nav-link" id="sobre-link" href="#sobre">Sobre</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="login-link" href="{{ route('login') }}">LogIn</a>
+                    <a class="nav-link" id="login-link" href="{{ route('login') }}">Login</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('register') }}">Registar</a>

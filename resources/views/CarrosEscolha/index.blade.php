@@ -17,7 +17,10 @@
             min-height: 100vh;
             color: #333;
         }
-
+        h1{
+            color: #547326;
+            align: center;
+        }
       
 
         .header {
@@ -290,6 +293,51 @@
                 gap: 1rem;
             }
         }
+
+        .filter-form {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            transition: background 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-success {
+            background: linear-gradient(90deg, #7bb661, #547326);
+            color: white;
+            box-shadow: 0 2px 8px rgba(84, 115, 38, 0.08);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(90deg, #6fae50, #4a7b1f);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(90deg, #e0e0e0, #bdbdbd);
+            color: #547326;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(84, 115, 38, 0.05);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(90deg, #d1d1d1, #a6a6a6);
+        }
     </style>
 </head>
 <body>
@@ -300,15 +348,15 @@
             </div>
             <div class="nav-links">
                 <a href="#sobre">Sobre</a>
-                <a href="#login">Login</a>
-                <a href="#registar">Registar</a>
+                <a href="{{ route('login') }}">Login</a>
+                <a href="{{ route('register') }}">Registar</a>
             </div>
         </div>
     </div>
 
     <div class="container">
         <div class="section-title">
-            <h1>Carros Disponíveis</h1>
+            <h1>Carros Disponíveis  -  Escolha o seu veículo</h1>
             <p>Oferecemos uma experiência de aluguer de veículos premium com a melhor frota de carros disponível no mercado. Os nossos veículos são cuidadosamente selecionados e mantidos para garantir a sua segurança, conforto e satisfação durante toda a viagem.</p>
         </div>
 
@@ -327,30 +375,59 @@
             </div>
         </div>
 
-        <div class="container mx-auto px-4 py-8">
-            <h1 class="section-title text-3xl font-bold mb-8 text-center">Escolha o seu veículo</h1>
-            <div class="cars-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                @foreach($bensLocaveis as $bem)
-                    <div class="car-card bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
-                        <img src="{{ $bem->imagem }}" alt="Imagem do veículo" class="car-image h-48 w-full object-cover">
-                        <div class="car-info p-4 flex-1 flex flex-col">
-                            <h2 class="car-name text-xl font-semibold mb-2">{{ $bem->marca->nome ?? '' }} {{ $bem->modelo }}</h2>
-                            <p class="text-gray-600 mb-1">Ano: {{ $bem->ano }}</p>
-                            <p class="text-gray-600 mb-1">Cor: {{ $bem->cor }}</p>
-                            <p class="text-gray-600 mb-1">Passageiros: {{ $bem->numero_passageiros }}</p>
-                            <p class="text-gray-600 mb-1">Transmissão: {{ $bem->transmissao }}</p>
-                            <p class="car-price text-gray-800 font-bold mt-2">{{ $bem->precoFormatado }}/dia</p>
-                            <div class="mt-auto pt-4">
-                                <a href="{{ route('reservas.create', ['bem' => $bem->id]) }}" class="rent-button block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center transition">Reservar Agora</a>
-                            </div>
+        <div class="section-title" style="margin-bottom:2rem;">
+            <h1 class="section-title text-2xl font-bold mb-2" style="color:#547326;">Filtrar veículos</h1>
+            <p style="color:#666; font-size:1rem; line-height:1.6;">Escolha a marca e o intervalo de preço para encontrar o carro ideal para si.</p>
+            <form method="GET" class="filter-form d-flex align-items-end" style="display:flex; gap:1.5rem; flex-wrap:wrap; margin-top:1.5rem;">
+                <div class="form-group" style="flex:1; min-width:180px;">
+                    <label for="marca_id" class="form-label" style="font-weight:600; color:#547326;">Marca</label>
+                    <select class="form-select" id="marca_id" name="marca_id" style="border-radius:8px; border:1px solid #e5e7eb; padding:0.5rem;">
+                        <option value="">Todas</option>
+                        @foreach($marcas as $marca)
+                            <option value="{{ $marca->id }}" @if(request('marca_id') == $marca->id) selected @endif>{{ $marca->nome }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group" style="flex:1; min-width:180px;">
+                    <label for="preco_min" class="form-label" style="font-weight:600; color:#547326;">Preço Mínimo</label>
+                    <input type="number" class="form-control" id="preco_min" name="preco_min" min="{{ $precoMinimo }}" max="{{ $precoMaximo }}" value="{{ request('preco_min') }}" placeholder="{{ $precoMinimo }}" style="border-radius:8px; border:1px solid #e5e7eb; padding:0.5rem;">
+                </div>
+                <div class="form-group" style="flex:1; min-width:180px;">
+                    <label for="preco_max" class="form-label" style="font-weight:600; color:#547326;">Preço Máximo</label>
+                    <input type="number" class="form-control" id="preco_max" name="preco_max" min="{{ $precoMinimo }}" max="{{ $precoMaximo }}" value="{{ request('preco_max') }}" placeholder="{{ $precoMaximo }}" style="border-radius:8px; border:1px solid #e5e7eb; padding:0.5rem;">
+                </div>
+                <div class="form-group d-flex" style="display:flex; gap:0.5rem; align-items:flex-end; min-width:160px;">
+                    <button type="submit" class="btn" style="background:linear-gradient(90deg,#7bb661,#547326); color:white; border:none; font-weight:700; border-radius:8px; padding:0.7rem 1.5rem; font-size:1rem; box-shadow:0 2px 8px rgba(84,115,38,0.08); transition:background 0.2s;">🔎 Filtrar</button>
+                    <a href="{{ route('carrosEscolha.index') }}" class="btn" style="background:linear-gradient(90deg,#e0e0e0,#bdbdbd); color:#547326; border:none; font-weight:700; border-radius:8px; padding:0.7rem 1.5rem; font-size:1rem; box-shadow:0 2px 8px rgba(84,115,38,0.05); transition:background 0.2s; text-decoration:none;">🧹 Limpar</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="cars-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            @foreach($bensLocaveis as $bem)
+                <div class="car-card bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                    <img src="{{ $bem->imagem }}" alt="Imagem do veículo" class="car-image h-48 w-full object-cover">
+                    <div class="car-info p-4 flex-1 flex flex-col">
+                        <h2 class="car-name text-xl font-semibold mb-2">{{ $bem->marca->nome ?? '' }} {{ $bem->modelo }}</h2>
+                        <p class="text-gray-600 mb-1">Ano: {{ $bem->ano }}</p>
+                        <p class="text-gray-600 mb-1">Cor: {{ $bem->cor }}</p>
+                        <p class="text-gray-600 mb-1">Passageiros: {{ $bem->numero_passageiros }}</p>
+                        <p class="text-gray-600 mb-1">Transmissão: {{ $bem->transmissao }}</p>
+                        <p class="car-price text-gray-800 font-bold mt-2">{{ $bem->precoFormatado }}/dia</p>
+                        <div class="mt-auto pt-4">
+                            @php
+                                // Propaga apenas locais e datas para a próxima etapa (Reserva)
+                                $query = request()->only(['local_levantamento','local_devolucao','data_hora_levantamento','data_hora_devolucao']);
+                            @endphp
+                            <a href="{{ route('reservas.create', $bem->id) }}@if($query){{ '?' . http_build_query($query) }}@endif" class="rent-button block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center transition">Ver Disponibilidade</a>
                         </div>
                     </div>
-                @endforeach
-            </div>
-            @if($bensLocaveis->isEmpty())
-                <div class="text-center text-gray-500 mt-8">Nenhum veículo disponível no momento.</div>
-            @endif
+                </div>
+            @endforeach
         </div>
+        @if($bensLocaveis->isEmpty())
+            <div class="text-center text-gray-500 mt-8">Nenhum veículo disponível no momento.</div>
+        @endif
     </div>
 </body>
 </html>

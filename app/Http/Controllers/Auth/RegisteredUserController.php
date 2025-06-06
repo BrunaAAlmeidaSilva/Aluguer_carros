@@ -33,6 +33,14 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'g-recaptcha-response' => ['required', 'string', function ($attribute, $value, $fail) {
+                $secret = config('recaptcha.secret_key');
+                $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $value . '&remoteip=' . request()->ip());
+                $result = json_decode($response, true);
+                if (!isset($result['success']) || $result['success'] !== true) {
+                    $fail('reCAPTCHA validation failed.');
+                }
+            }],
         ]);
 
         $user = User::create([
@@ -44,6 +52,13 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        // Redirecionar para pagamento se reserva estiver em progresso
+        if (session()->has('reservation_in_progress') && session()->has('reserva_id')) {
+            $reservaId = session('reserva_id');
+            session()->forget(['reservation_in_progress', 'reserva_id']);
+            return redirect()->route('pagamentos.show', ['reserva' => $reservaId]);
+        }
 
         return redirect(route('dashboard', absolute: false));
     }

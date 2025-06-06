@@ -165,7 +165,7 @@
                     <a class="nav-link" id="sobre-link" href="#sobre">Sobre</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="login-link" href="{{ route('login') }}">LogIn</a>
+                    <a class="nav-link" id="login-link" href="{{ route('login') }}">Login</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="register-link" href="{{ route('register') }}">Registar</a>
@@ -179,55 +179,37 @@
 <div class="container">
     <div class="booking-container">
         <div class="booking-form">
-            <div class="row g-4 mb-4">
+            <form method="GET" action="{{ route('carrosEscolha.index') }}" class="row g-3 mb-4">
                 <div class="col-md-6">
-                    <label for="localLevantamento" class="form-label">
-                        <i class="bi bi-geo-alt"></i> Local de Levantamento
-                    </label>
-                    <select class="form-select" id="localLevantamento" name="localLevantamento">
-                        <option value="">Escolha um local</option>
-                        <option value="lisboa-aeroporto">Lisboa - Unidade Lisboa Aeroporto</option>
-                        <option value="braga-centro">Braga - Unidade Braga Centro</option>
-                        <option value="braga-nogueira">Braga - Unidade Braga Nogueira</option>
-                        <option value="porto-centro">Porto - Unidade Porto Centro</option>
-                        <option value="coimbra-estacao">Coimbra - Unidade Coimbra Estação</option>
+                    <label for="local_levantamento" class="form-label">Local de Levantamento</label>
+                    <select class="form-select" id="local_levantamento" name="local_levantamento" required>
+                        <option value="" disabled selected>Escolha uma filial</option>
+                        @foreach($filiais as $filial)
+                            <option value="{{ $filial }}">{{ $filial }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label for="localDevolucao" class="form-label">
-                        <i class="bi bi-geo-alt-fill"></i> Local de Devolução
-                    </label>
-                    <select class="form-select" id="localDevolucao" name="localDevolucao">
-                        <option value="">Escolha um local</option>
-                        <option value="lisboa-aeroporto">Lisboa - Unidade Lisboa Aeroporto</option>
-                        <option value="braga-centro">Braga - Unidade Braga Centro</option>
-                        <option value="braga-nogueira">Braga - Unidade Braga Nogueira</option>
-                        <option value="porto-centro">Porto - Unidade Porto Centro</option>
-                        <option value="coimbra-estacao">Coimbra - Unidade Coimbra Estação</option>
+                    <label for="local_devolucao" class="form-label">Local de Devolução</label>
+                    <select class="form-select" id="local_devolucao" name="local_devolucao" required>
+                        <option value="" disabled selected>Escolha uma filial</option>
+                        @foreach($filiais as $filial)
+                            <option value="{{ $filial }}">{{ $filial }}</option>
+                        @endforeach
                     </select>
                 </div>
-            </div>
-            <div class="row g-4 mb-4">
                 <div class="col-md-6">
-                    <label for="dataHoraLevantamento" class="form-label">
-                        <i class="bi bi-calendar-plus"></i> Data e Hora de Levantamento
-                    </label>
-                    <input type="datetime-local" class="form-control" id="dataHoraLevantamento" name="dataHoraLevantamento">
+                    <label for="data_hora_levantamento" class="form-label">Data e Hora de Levantamento</label>
+                    <input type="datetime-local" class="form-control" id="data_hora_levantamento" name="data_hora_levantamento" required>
                 </div>
                 <div class="col-md-6">
-                    <label for="dataHoraDevolucao" class="form-label">
-                        <i class="bi bi-calendar-minus"></i> Data e Hora de Devolução
-                    </label>
-                    <input type="datetime-local" class="form-control" id="dataHoraDevolucao" name="dataHoraDevolucao">
+                    <label for="data_hora_devolucao" class="form-label">Data e Hora de Devolução</label>
+                    <input type="datetime-local" class="form-control" id="data_hora_devolucao" name="data_hora_devolucao" required>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12 text-center">
-                     <a href="{{ route('carrosEscolha.index') }}" class="btn btn-reserve">
-    <i class="bi bi-search"></i> Ver Disponibilidade
-</a>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success btn-reserve w-100">Ver Veículos Disponíveis</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>

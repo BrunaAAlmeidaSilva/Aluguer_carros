@@ -339,136 +339,144 @@
     <div class="container">
         <!-- Date Selection Section -->
         <div class="date-section">
-            <form method="GET" action="{{ route('reservas.create', ['bem' => $bem->id]) }}">
-                <div class="date-container">
-                    <div class="date-group">
-                        <label class="date-label">Data de Início</label>
-                        <input 
-                            type="date" 
-                            class="date-input" 
-                            name="data_inicio" 
-                            value="{{ request('data_inicio', date('Y-m-d')) }}"
-                            min="{{ date('Y-m-d') }}"
-                            required
-                        >
-                    </div>
-                    <div class="date-group">
-                        <label class="date-label">Data de Fim</label>
-                        <input 
-                            type="date" 
-                            class="date-input" 
-                            name="data_fim" 
-                            value="{{ request('data_fim', date('Y-m-d', strtotime('+1 day'))) }}"
-                            min="{{ request('data_inicio', date('Y-m-d')) }}"
-                            required
-                        >
-                    </div>
-                    <div class="date-group" style="align-self: flex-end;">
-                        <button type="submit" class="login-button" style="width:auto;">Atualizar</button>
-                    </div>
+            <div class="date-container">
+                <div class="date-group">
+                    <label class="date-label">Local de Levantamento</label>
+                    <input type="text" class="date-input" value="{{ $local_levantamento ?? '' }}" readonly>
                 </div>
-            </form>
+                <div class="date-group">
+                    <label class="date-label">Local de Devolução</label>
+                    <input type="text" class="date-input" value="{{ $local_devolucao ?? '' }}" readonly>
+                </div>
+                <div class="date-group">
+                    <label class="date-label">Data de Levantamento</label>
+                    <input type="date" class="date-input" value="{{ $data_inicio ?? '' }}" readonly>
+                </div>
+                <div class="date-group">
+                    <label class="date-label">Data de Devolução</label>
+                    <input type="date" class="date-input" value="{{ $data_fim ?? '' }}" readonly>
+                </div>
+                <div class="date-group">
+                    <label class="date-label">Nº de Dias</label>
+                    <input type="text" class="date-input" value="{{ $dias ?? 1 }}" readonly>
+                </div>
+            </div>
+            @if(!$bem)
+                <div style="margin-top:2rem;text-align:center;">
+                    <a href="{{ route('carrosEscolha.index') }}" class="btn btn-primary">Escolher Veículo</a>
+                </div>
+            @endif
         </div>
 
         <!-- Reservation Details -->
         <div class="reservation-details">
-            <!-- Car Section -->
-             
-
-
-            <div class="car-image-section">
-                <img src="{{ $bem->imagem }}" alt="Imagem do veículo" style="max-width: 400px; width: 100%; border-radius: 12px; margin-bottom: 20px;">
-                <!-- <img src="{{ $bem->imagem_url ?? 'https://images.unsplash.com/photo-1549317336-206569e8475c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80' }}" 
-                     alt="{{ $bem->modelo }}" class="car-image"> -->
-                
-                <h2 class="car-title">
-                    {{ $bem->marca->nome ?? '' }} {{ $bem->modelo }} {{ $bem->ano }}
-                </h2>
-                
-                <div class="car-details">
-                    <div class="detail-row">
-                        <span class="detail-label">Matrícula:</span>
-                        <span class="detail-value">{{ $bem->registo_unico_publico }}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Cor:</span>
-                        <span class="detail-value">{{ $bem->cor }}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Combustível:</span>
-                        <span class="detail-value">{{ ucfirst($bem->combustivel) }}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Transmissão:</span>
-                        <span class="detail-value">{{ ucfirst($bem->transmissao) }}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Passageiros:</span>
-                        <span class="detail-value">{{ $bem->numero_passageiros }}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Portas:</span>
-                        <span class="detail-value">{{ $bem->numero_portas }}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Ano:</span>
-                        <span class="detail-value">{{ $bem->ano }}</span>
-                    </div>
-                </div>
-
-                <div class="characteristics">
-                    <h4>CARACTERÍSTICAS</h4>
-                    <div class="char-grid">
-                        @if($bem->caracteristicas && count($bem->caracteristicas))
-                            @foreach($bem->caracteristicas as $caracteristica)
-                                <div class="char-item">{{ $caracteristica->nome }}</div>
-                            @endforeach
-                        @else
-                            <div class="char-item">Sem características adicionais</div>
-                        @endif
+            @if($bem)
+                <div>
+                    <div class="car-image-section">
+                        <img src="{{ $bem->imagem ?? '' }}" alt="Imagem do veículo" class="car-image">
+                        <h2 class="car-title">
+                            {{ $bem->marca->nome ?? '' }} {{ $bem->modelo ?? '' }} {{ $bem->ano ?? '' }}
+                        </h2>
+                        <div class="car-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Matrícula:</span>
+                                <span class="detail-value">{{ $bem->registo_unico_publico ?? '' }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Cor:</span>
+                                <span class="detail-value">{{ $bem->cor ?? '' }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Combustível:</span>
+                                <span class="detail-value">{{ ucfirst($bem->combustivel ?? '') }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Transmissão:</span>
+                                <span class="detail-value">{{ ucfirst($bem->transmissao ?? '') }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Passageiros:</span>
+                                <span class="detail-value">{{ $bem->numero_passageiros ?? '' }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Portas:</span>
+                                <span class="detail-value">{{ $bem->numero_portas ?? '' }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Ano:</span>
+                                <span class="detail-value">{{ $bem->ano ?? '' }}</span>
+                            </div>
+                        </div>
+                        <div class="characteristics">
+                            <h4>CARACTERÍSTICAS</h4>
+                            <div class="char-grid">
+                                @if($bem->caracteristicas && count($bem->caracteristicas))
+                                    @foreach($bem->caracteristicas as $caracteristica)
+                                        <div class="char-item">{{ $caracteristica->nome }}</div>
+                                    @endforeach
+                                @else
+                                    <div class="char-item">Sem características adicionais</div>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Booking Summary  NAO ESTA A FUNCIONAR!!!!!-->
-            <div class="booking-summary">
-                <h3 class="summary-title">Resumo da Reserva</h3>
-                
-                <div class="price-breakdown">
-                    <div class="price-row">
-                        <span>Período:</span>
-                        <span>{{ \Carbon\Carbon::parse($data_inicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($data_fim)->format('d/m/Y') }}</span>
+                <div>
+                    <div class="booking-summary">
+                        <h3 class="summary-title">Resumo da Reserva</h3>
+                        <div class="price-breakdown">
+                            <div class="price-row">
+                                <span>Período:</span>
+                                <span>{{ $data_inicio && $data_fim ? (\Carbon\Carbon::parse($data_inicio)->format('d/m/Y') . ' - ' . \Carbon\Carbon::parse($data_fim)->format('d/m/Y')) : '-' }}</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Número de dias:</span>
+                                <span>{{ $dias ?? '-' }} {{ isset($dias) && $dias == 1 ? 'dia' : 'dias' }}</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Preço por dia:</span>
+                                <span>€{{ isset($bem->preco_diario) ? number_format($bem->preco_diario, 2, ',', '.') : '-' }}</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Subtotal:</span>
+                                <span>€{{ isset($subtotal) ? number_format($subtotal, 2, ',', '.') : '-' }}</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Taxa de serviço:</span>
+                                <span>€{{ isset($taxa_servico) ? number_format($taxa_servico, 2, ',', '.') : '-' }}</span>
+                            </div>
+                            <div class="price-row">
+                                <span>TOTAL:</span>
+                                <span>€{{ isset($bem) && isset($total) ? number_format($total, 2, ',', '.') : (isset($bem) && isset($bem->preco_total) ? number_format($bem->preco_total, 2, ',', '.') : '-') }}</span>
+                            </div>
+                        </div>
+                        <div class="security-notice">
+                            <strong>Importante:</strong> No ato do levantamento do carro será exigido um cartão de crédito físico em nome do titular da reserva para depósito de segurança, o qual será devolvido no término do contrato.
+                        </div>
+                        <form method="POST" action="{{ route('reservas.store') }}">
+                            @csrf
+                            <input type="hidden" name="bem_id" value="{{ $bem->id }}">
+                            <input type="hidden" name="data_inicio" value="{{ $data_inicio }}">
+                            <input type="hidden" name="data_fim" value="{{ $data_fim }}">
+                            @if(!auth()->check())
+                                <button type="submit" class="login-button" style="display: block; text-align: center; width: 100%;">Fazer Login para proceder ao pagamento</button>
+                            @else
+                                <button type="submit" class="login-button" style="display: block; text-align: center; width: 100%;">Proceder ao pagamento</button>
+                            @endif
+                        </form>
+                        <a href="{{ route('register') }}" class="register-button" style="display: block; text-align: center;">
+                            Fazer Registo para proceder ao pagamento
+                        </a>
                     </div>
-                    <div class="price-row">
-                        <span>Número de dias:</span>
-                        <span>{{ $dias }} {{ $dias == 1 ? 'dia' : 'dias' }}</span>
-                    </div>
-                    <div class="price-row">
-                        <span>Preço por dia:</span>
-                        <span>€{{ number_format($bem->preco_diario, 2, ',', '.') }}</span>
-                    </div>
-                    <div class="price-row">
-                        <span>Subtotal:</span>
-                        <span>€{{ number_format($subtotal, 2, ',', '.') }}</span>
-                    </div>
-                    <div class="price-row">
-                        <span>Taxa de serviço:</span>
-                        <span>€{{ number_format($taxa_servico, 2, ',', '.') }}</span>
-                    </div>
-                    <div class="price-row">
-                        <span>TOTAL:</span>
-                        <span>€{{ number_format($total, 2, ',', '.') }}</span>
-                    </div>
+                    
                 </div>
-
-                <div class="security-notice">
-                    <strong>Importante:</strong> No ato do levantamento do carro será exigido um cartão de crédito físico em nome do titular da reserva para depósito de segurança, o qual será devolvido no término do contrato.
+            @else
+                <div class="booking-summary" style="text-align:center;">
+                    <h3 class="summary-title">Nenhum veículo selecionado</h3>
+                    <p>Por favor, escolha um veículo para ver o resumo da reserva e o preço detalhado.</p>
+                    <a href="{{ route('carrosEscolha.index') }}" class="btn btn-primary">Escolher Veículo</a>
                 </div>
-
-                <a href="{{ route('login') }}" class="login-button" style="display: block; text-align: center;">
-                    Fazer Login para proceder ao pagamento
-                </a>
-            </div>
+            @endif
         </div>
     </div>
 

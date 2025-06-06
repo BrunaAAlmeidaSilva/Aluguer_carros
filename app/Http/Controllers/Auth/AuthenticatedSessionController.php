@@ -25,8 +25,14 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
+
+        // Redirecionar para pagamento se reserva estiver em progresso
+        if (session()->has('reservation_in_progress') && session()->has('reserva_id')) {
+            $reservaId = session('reserva_id');
+            session()->forget(['reservation_in_progress', 'reserva_id']);
+            return redirect()->route('pagamentos.show', ['reserva' => $reservaId]);
+        }
 
         return redirect()->intended(route('dashboard', absolute: false));
     }

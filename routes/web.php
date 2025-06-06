@@ -10,7 +10,7 @@ use App\Http\Controllers\{DashboardController,HomeController,BemLocavelControlle
 // Página inicial: Dashboard
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-// Página Home (viaturas)
+// Página Home (escolher localizaçao e datas)
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Página Bem Locavel
@@ -24,7 +24,7 @@ Route::post('/bens-locaveis/processar-filtros', [BemLocavelController::class, 'p
 Route::get('/bens-locaveis/detalhes/{id}', [BemLocavelController::class, 'detalhes'])->name('bens.locaveis.detalhes');
 
 
-// Página principal da grid de veículos
+// Página principal CarrosEscolha da grid de veículos
 Route::get('/carros-escolha', [BemLocavelController::class, 'carrosEscolha'])->name('carrosEscolha.index');
 
 
@@ -37,6 +37,10 @@ Route::get('/carros/search', [BemLocavelController::class, 'search'])->name('car
 
 //Route::get('/reservas/{bem}', [ReservaController::class, 'create'])->name('reservas.create');
 Route::get('/reservas/{bem}', [ReservaController::class, 'create'])->name('reservas.create');
+
+//Rota PDF para imprimir reservas
+Route::get('/reservas/{reserva}/pdf', [\App\Http\Controllers\ReservaController::class, 'gerarPdf'])->name('reservas.pdf');
+
 
 
 // Rotas de autenticação e perfil
@@ -67,3 +71,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/{reserva}/callback', [PagamentoController::class, 'callback'])->name('callback');
     });
 });
+
+// Área do cliente
+Route::get('/cliente/area', function () { return view('cliente.area');})->name('cliente.area');

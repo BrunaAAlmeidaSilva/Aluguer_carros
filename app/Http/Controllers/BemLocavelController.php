@@ -46,7 +46,7 @@ class BemLocavelController extends Controller
     public function search(Request $request): View
     {
         $filtros = $this->processarFiltros($request);
-        $bensLocaveis = BemLocavel::buscarComFiltros($filtros)->paginate(12);
+        $bensLocaveis = BemLocavel::buscarComFiltros($filtros)->paginate(32);
 
         return view('bemLocavel.resultados', compact('bensLocaveis', 'filtros'));
     }
@@ -101,9 +101,24 @@ class BemLocavelController extends Controller
         return view('bemLocavel.estatisticas', compact('stats'));
     }
 
-    public function carrosEscolha()
+    public function carrosEscolha(Request $request)
 {
-    $bensLocaveis = \App\Models\BemLocavel::with('marca')->emManutencao(false)->paginate(12);
-    return view('CarrosEscolha.index', compact('bensLocaveis'));
+    $marcas = \App\Models\Marca::orderBy('nome')->get();
+    $precoMinimo = \App\Models\BemLocavel::min('preco_diario') ?? 0;
+    $precoMaximo = \App\Models\BemLocavel::max('preco_diario') ?? 1000;
+
+    $query = \App\Models\BemLocavel::with('marca')->emManutencao(false);
+    if ($request->filled('marca_id')) {
+        $query->where('marca_id', $request->input('marca_id'));
+    }
+    if ($request->filled('preco_min')) {
+        $query->where('preco_diario', '>=', $request->input('preco_min'));
+    }
+    if ($request->filled('preco_max')) {
+        $query->where('preco_diario', '<=', $request->input('preco_max'));
+    }
+    $bensLocaveis = $query->get();
+
+    return view('CarrosEscolha.index', compact('bensLocaveis', 'marcas', 'precoMinimo', 'precoMaximo'));
 }
 }
