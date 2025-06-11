@@ -102,23 +102,29 @@ class BemLocavelController extends Controller
     }
 
     public function carrosEscolha(Request $request)
-{
-    $marcas = \App\Models\Marca::orderBy('nome')->get();
-    $precoMinimo = \App\Models\BemLocavel::min('preco_diario') ?? 0;
-    $precoMaximo = \App\Models\BemLocavel::max('preco_diario') ?? 1000;
+    {
+        $marcas = \App\Models\Marca::orderBy('nome')->get();
+        $precoMinimo = \App\Models\BemLocavel::min('preco_diario') ?? 0;
+        $precoMaximo = \App\Models\BemLocavel::max('preco_diario') ?? 1000;
 
-    $query = \App\Models\BemLocavel::with('marca')->emManutencao(false);
-    if ($request->filled('marca_id')) {
-        $query->where('marca_id', $request->input('marca_id'));
-    }
-    if ($request->filled('preco_min')) {
-        $query->where('preco_diario', '>=', $request->input('preco_min'));
-    }
-    if ($request->filled('preco_max')) {
-        $query->where('preco_diario', '<=', $request->input('preco_max'));
-    }
-    $bensLocaveis = $query->get();
+        $dataInicio = $request->input('data_hora_levantamento') ? substr($request->input('data_hora_levantamento'), 0, 10) : null;
+        $dataFim = $request->input('data_hora_devolucao') ? substr($request->input('data_hora_devolucao'), 0, 10) : null;
 
-    return view('CarrosEscolha.index', compact('bensLocaveis', 'marcas', 'precoMinimo', 'precoMaximo'));
-}
+        $query = \App\Models\BemLocavel::with('marca')->emManutencao(false);
+        if ($dataInicio && $dataFim) {
+            $query->disponivel($dataInicio, $dataFim);
+        }
+        if ($request->filled('marca_id')) {
+            $query->where('marca_id', $request->input('marca_id'));
+        }
+        if ($request->filled('preco_min')) {
+            $query->where('preco_diario', '>=', $request->input('preco_min'));
+        }
+        if ($request->filled('preco_max')) {
+            $query->where('preco_diario', '<=', $request->input('preco_max'));
+        }
+        $bensLocaveis = $query->get();
+
+        return view('CarrosEscolha.index', compact('bensLocaveis', 'marcas', 'precoMinimo', 'precoMaximo'));
+    }
 }

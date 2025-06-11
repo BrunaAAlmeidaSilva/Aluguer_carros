@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANURB Cars S.A. - Reserva</title>
+@extends('layouts.app')
+
+@section('content')
     <style>
         * {
             margin: 0;
@@ -73,7 +70,7 @@
 
         .date-container {
             display: flex;
-            gap: 2rem;
+            gap: 1.2rem; /* levemente maior */
             align-items: center;
             justify-content: center;
         }
@@ -82,6 +79,8 @@
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+            min-width: 150px; /* maior para melhor leitura */
+            max-width: 200px;
         }
 
         .date-label {
@@ -91,13 +90,13 @@
         }
 
         .date-input {
-            padding: 1rem;
+            padding: 0.8rem; /* maior para melhor leitura */
             border: 2px solid #e0e0e0;
             border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: white;
-            min-width: 200px;
+            font-size: 1.05rem; /* levemente maior */
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .date-input:focus {
@@ -317,23 +316,6 @@
             animation-delay: 0.2s;
         }
     </style>
-</head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="logo">
-            ANURB Cars S.A. 
-            <img src="Imagens/car.png" class="carro-image ">
-    
-        </div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#sobre">Sobre</a></li>
-                <li><a href="#login">Login</a></li>
-                <li><a href="#register">Registar</a></li>
-            </ul>
-        </nav>
-    </header>
 
     <!-- Main Container -->
     <div class="container">
@@ -481,6 +463,17 @@
     </div>
 
     <script>
+        // Limitar datas para hoje + 7 meses
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const maxDate = new Date(today.getFullYear(), today.getMonth() + 7, today.getDate());
+            const maxDateStr = maxDate.toISOString().slice(0,10);
+            const dataInicio = document.querySelector('input[name="data_inicio"]');
+            const dataFim = document.querySelector('input[name="data_fim"]');
+            if (dataInicio) dataInicio.setAttribute('max', maxDateStr);
+            if (dataFim) dataFim.setAttribute('max', maxDateStr);
+        });
+
         // Update dates and calculate total
         function updateReservation() {
             const checkinDate = new Date(document.getElementById('checkin').value);
@@ -527,5 +520,4 @@
         // Initialize
         updateReservation();
     </script>
-</body>
-</html>
+@endsection

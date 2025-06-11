@@ -376,7 +376,7 @@
         </div>
 
         <div class="section-title" style="margin-bottom:2rem;">
-            <h1 class="section-title text-2xl font-bold mb-2" style="color:#547326;">Filtrar veículos</h1>
+            <h1>Filtrar veículos</h1>
             <p style="color:#666; font-size:1rem; line-height:1.6;">Escolha a marca e o intervalo de preço para encontrar o carro ideal para si.</p>
             <form method="GET" class="filter-form d-flex align-items-end" style="display:flex; gap:1.5rem; flex-wrap:wrap; margin-top:1.5rem;">
                 <div class="form-group" style="flex:1; min-width:180px;">

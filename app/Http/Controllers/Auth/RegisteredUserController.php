@@ -51,7 +51,23 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+        // Guardar dados da reserva antes de regenerar a sessão
+        $dadosReserva = [
+            'local_levantamento' => session('local_levantamento'),
+            'local_devolucao' => session('local_devolucao'),
+            'data_hora_levantamento' => session('data_hora_levantamento'),
+            'data_hora_devolucao' => session('data_hora_devolucao'),
+            'bem_id' => session('bem_id'),
+        ];
+
         Auth::login($user);
+        $request->session()->regenerate();
+        // Repõe os dados na nova sessão
+        foreach ($dadosReserva as $key => $value) {
+            if ($value) {
+                session([$key => $value]);
+            }
+        }
 
         // Redirecionar para pagamento se reserva estiver em progresso
         if (session()->has('reservation_in_progress') && session()->has('reserva_id')) {
@@ -59,7 +75,6 @@ class RegisteredUserController extends Controller
             session()->forget(['reservation_in_progress', 'reserva_id']);
             return redirect()->route('pagamentos.show', ['reserva' => $reservaId]);
         }
-
         return redirect(route('dashboard', absolute: false));
     }
 }

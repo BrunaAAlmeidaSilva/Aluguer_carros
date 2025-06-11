@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ANURB Cars S.A. - Reserva</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    
-    <style>
+@extends('layouts.app')
+
+@section('content')
+<style>
         .custom-background {
             background-color: #547326;
             min-height: 100vh;
@@ -145,35 +139,6 @@
             margin-top: 40px;
         }
     </style>
-</head>
-<body class="custom-background">
-
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="#">
-            <span>ANURB Cars S.A. Bem-Vindo</span>
-            <img src="Imagens/car.png" class="carro-image">
-            <a href="https://www.flaticon.com/free-icons/car" title="car icons"></a>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" id="sobre-link" href="#sobre">Sobre</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="login-link" href="{{ route('login') }}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="register-link" href="{{ route('register') }}">Registar</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
 
 <!-- Booking Form Section -->
 <div class="container">
@@ -274,7 +239,7 @@
                     <div class="feature-icon">
                         <i class="bi bi-shield-check"></i>
                     </div>
-                    <h4>Política de cancelamentp</h4>
+                    <h4>Política de Cancelamento</h4>
                     <p>Aluguer de viaturas com cancelamento gratuito: pode cancelar a sua reserva sem custos até 48h antes da viagem.</p>
                 </div>
             </div>
@@ -283,7 +248,7 @@
                     <div class="feature-icon">
                         <i class="bi bi-clock"></i>
                     </div>
-                    <i class="bi bi-geo-alt"></i><h4>Sempre perto de si</h4>
+                    <h4>Sempre Perto de Si</h4>
                     <p>ANURB Cars dispõe de estações de aluguer de veículos em vários pontos do país. Levante e devolva o veículo em qualquer uma das nossas estações</p>
                 </div>
             </div>
@@ -292,7 +257,7 @@
                     <div class="feature-icon">
                         <i class="bi bi-star"></i>
                     </div>
-                    <h4>Vasta gama de veículos</h4>
+                    <h4>Vasta Gama de eículos</h4>
                     <p>Encontre a melhor solução para alugar carro, numa vasta gama de opções disponíveis.</p>
                 </div>
             </div>
@@ -337,6 +302,4 @@
         document.getElementById('dataHoraDevolucao').setAttribute('min', pickupDateTime);
     });
 </script>
-
-</body>
-</html>
+@endsection

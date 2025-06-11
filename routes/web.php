@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{DashboardController,HomeController,BemLocavelController,
-    UserController,ReservaController,PagamentoController};
+    UserController,ReservaController,PagamentoController,AreaCliente};
 
 
 
@@ -61,6 +61,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [ReservaController::class, 'store'])->name('store');
         Route::get('/{reserva}', [ReservaController::class, 'show'])->name('show');
         Route::patch('/{reserva}/cancelar', [ReservaController::class, 'cancel'])->name('cancel');
+        // Editar reserva
+        Route::get('/reservas/{reserva}/editar', [\App\Http\Controllers\ReservaController::class, 'edit'])->name('reservas.edit');
+        // Atualizar reserva (PATCH)
+        Route::patch('/reservas/{reserva}/atualizar', [\App\Http\Controllers\ReservaController::class, 'update'])->name('reservas.update');
+        // Permitir AJAX via POST + _method=PATCH
+        Route::post('/reservas/{reserva}/atualizar', [\App\Http\Controllers\ReservaController::class, 'update']);
         
     });
 
@@ -73,4 +79,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Área do cliente
-Route::get('/cliente/area', function () { return view('cliente.area');})->name('cliente.area');
+Route::get('/cliente/area', [AreaCliente::class, 'clientArea'])->name('cliente.area');
+Route::patch('/cliente/update-profile', [AreaCliente::class, 'updateProfile'])->name('cliente.updateProfile');
+// Cancelar reserva
+Route::patch('/reservas/{id}/cancelar', [\App\Http\Controllers\AreaCliente::class, 'cancelarReserva'])->name('reservas.cancel');

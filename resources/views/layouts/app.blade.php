@@ -68,6 +68,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Registar</a>
                 </li>
+                <li class="nav-item">
+                    <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="nav-link btn btn-link" style="display:inline; padding:0; margin:0; background:none; border:none; color:inherit; font:inherit; text-align:left;">Logout</button>
+                    </form>
+                </li>
             </ul>
         </div>
     </div>

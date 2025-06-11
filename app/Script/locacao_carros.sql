@@ -56,19 +56,19 @@ CREATE TABLE bem_caracteristicas (
     FOREIGN KEY (caracteristica_id) REFERENCES caracteristicas(id) ON DELETE CASCADE
 );
 
--- Tabela reservas 
--- CREATE TABLE reservas (
---     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
---     user_id BIGINT UNSIGNED NOT NULL,
---     bem_locavel_id BIGINT UNSIGNED NOT NULL,
---     data_inicio DATE NOT NULL,
---     data_fim DATE NOT NULL,
---     preco_total DECIMAL(10,2) NOT NULL,
---     status ENUM('pendente', 'confirmada', 'ativa', 'finalizada', 'cancelada') DEFAULT 'pendente',
---     observacoes TEXT,
---     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
---     FOREIGN KEY (bem_locavel_id) REFERENCES bens_locaveis(id) ON DELETE CASCADE
--- );
+Tabela reservas 
+CREATE TABLE reservas (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    bem_locavel_id BIGINT UNSIGNED NOT NULL,
+    data_inicio DATE NOT NULL,
+    data_fim DATE NOT NULL,
+    preco_total DECIMAL(10,2) NOT NULL,
+    status ENUM('pendente', 'confirmada', 'ativa', 'finalizada', 'cancelada') DEFAULT 'pendente',
+    observacoes TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (bem_locavel_id) REFERENCES bens_locaveis(id) ON DELETE CASCADE
+);
 
 CREATE TABLE pagamentos (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

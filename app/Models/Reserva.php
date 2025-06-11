@@ -19,7 +19,10 @@ class Reserva extends Model
         'data_inicio',
         'data_fim',
         'preco_total',
-        'status'
+        'status',
+        'valor_devolucao',
+        'local_levantamento',
+        'local_devolucao',
     ];
 
     // Cast para tipo de dados
@@ -47,6 +50,14 @@ class Reserva extends Model
     }
 
     /**
+     * Relação com os pagamentos da reserva.
+     */
+    public function pagamentos()
+    {
+        return $this->hasMany(\App\Models\Pagamento::class, 'reserva_id');
+    }
+
+    /**
      * Verifica se a reserva ainda está ativa.
      */
     public function isAtiva()
@@ -65,5 +76,5 @@ class Reserva extends Model
         });
     }
 }
-   
-   
+
+
