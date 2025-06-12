@@ -210,3 +210,17 @@ INSERT INTO localizacoes (bem_locavel_id, cidade, filial, posicao) VALUES
 (28, 'Braga', 'Unidade Braga Nogueira', 'C2'),
 (29, 'Braga', 'Unidade Braga Centro', 'B3'),
 (30, 'Coimbra', 'Unidade Coimbra Estação', 'C2');
+
+ 
+INSERT INTO users (name, email, telefone, email_verified_at, password, 
+remember_token, created_at, updated_at, nif, data_nascimento, morada) VALUES 
+('António Guterres','antonioguterres@anurb.com','912345678',NOW(),
+'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 
+NULL,NOW(),NOW(),'123456789','1940-05-15','Rua da Liberdade, 123, 3000-001 Lisboa'
+);
+
+INSERT INTO users (name, email, telefone, email_verified_at, password, 
+remember_token, created_at, updated_at, nif, data_nascimento, morada) VALUES 
+('Rosa Mota','rosamota@anurb.com','963852741',NOW(), '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 
+NULL,NOW(),NOW(),'987654321','1965-12-03','Avenida da Rodovia, 456, 1000-100 Braga'
+);

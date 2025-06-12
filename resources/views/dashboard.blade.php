@@ -73,7 +73,7 @@
     </div>
 </nav>
 
-<!-- Car Image Section -->
+<!-- Secçaão com a imagem grande do carro -->
  
 <div class="container text-center">
     <img src="Imagens/carroEstilosoDashboard.jpg" alt="Carro Estiloso" class="car-image" width="50" height="50">
@@ -90,6 +90,8 @@
     
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- SweetAlert para o modal de "Sobre" -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const sobreLink = document.getElementById('sobre-link');

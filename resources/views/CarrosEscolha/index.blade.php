@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANURB Cars - Carros Disponíveis</title>
+@extends('layouts.app')
+
+@section('content')
     <style>
         * {
             margin: 0;
@@ -341,21 +338,9 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="header-content">
-            <div class="logo">ANURB Cars S.A. 
-                
-            </div>
-            <div class="nav-links">
-                <a href="#sobre">Sobre</a>
-                <a href="{{ route('login') }}">Login</a>
-                <a href="{{ route('register') }}">Registar</a>
-            </div>
-        </div>
-    </div>
 
     <div class="container">
-        <div class="section-title">
+        <div class="section-title" style="margin-top:20px; padding:2rem; background-color:#ffffff; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
             <h1>Carros Disponíveis  -  Escolha o seu veículo</h1>
             <p>Oferecemos uma experiência de aluguer de veículos premium com a melhor frota de carros disponível no mercado. Os nossos veículos são cuidadosamente selecionados e mantidos para garantir a sua segurança, conforto e satisfação durante toda a viagem.</p>
         </div>
@@ -429,5 +414,12 @@
             <div class="text-center text-gray-500 mt-8">Nenhum veículo disponível no momento.</div>
         @endif
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    
+</script>
+
+
 </body>
 </html>
+@endsection

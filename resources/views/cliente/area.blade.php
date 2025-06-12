@@ -506,7 +506,7 @@
             </form>
         </div>
     </div>
-
+        <!-- Ediçao de datas  -->
     <script>
         let reservas = @json($reservas);
         function openEditModal(reservaId) {
@@ -564,7 +564,7 @@
             return false;
         }
 
-        // --- NOVO: AJAX para editar reserva ---
+        // --- AJAX para editar reserva ---
         document.getElementById('editReservaForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const form = this;
@@ -623,7 +623,7 @@
                 row.children[7].querySelector('.payment-status').textContent = reserva.pagamento_status.charAt(0).toUpperCase() + reserva.pagamento_status.slice(1);
                 row.children[7].querySelector('.payment-status').className = 'payment-status payment-' + reserva.pagamento_status;
             }
-            // Valores a receber (novo: diferença de dias)
+            // Valores a receber (diferença de dias)
             if (reserva.status === 'cancelada') {
                 if (reserva.valor_devolucao && reserva.valor_devolucao > 0) {
                     row.children[8].innerHTML = '<span style="color: #547326; font-weight: bold;">€' + Number(reserva.valor_devolucao).toFixed(2) + '</span>';
@@ -647,6 +647,8 @@
             return `${d}/${m}/${y}`;
         }
     </script>
+
+    
 @endsection
 
 

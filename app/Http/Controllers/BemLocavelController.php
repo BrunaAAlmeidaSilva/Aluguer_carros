@@ -89,17 +89,17 @@ class BemLocavelController extends Controller
     }
 
     // Estatísticas do catálogo
-    public function estatisticas(): View
-    {
-        $stats = [
-            'total_veiculos' => BemLocavel::count(),
-            'disponiveis' => BemLocavel::emManutencao(false)->count(),
-            'em_manutencao' => BemLocavel::where('manutencao', true)->count(),
-            'preco_medio' => BemLocavel::avg('preco_diario'),
-        ];
+    // public function estatisticas(): View
+    // {
+    //     $stats = [
+    //         'total_veiculos' => BemLocavel::count(),
+    //         'disponiveis' => BemLocavel::emManutencao(false)->count(),
+    //         'em_manutencao' => BemLocavel::where('manutencao', true)->count(),
+    //         'preco_medio' => BemLocavel::avg('preco_diario'),
+    //     ];
 
-        return view('bemLocavel.estatisticas', compact('stats'));
-    }
+    //     return view('bemLocavel.estatisticas', compact('stats'));
+    // }
 
     public function carrosEscolha(Request $request)
     {

@@ -1,88 +1,72 @@
-<<<<<<< HEAD
-# Locacao_carros
+# Aluguer de Carros ANURB CARS S.A.- Sistema de Reservas de Automóveis
 
-This is the Locacao_carros project. 
+Este projeto é um sistema de aluguer de automóveis desenvolvido em Laravel, com autenticação, área do cliente, gestão de reservas, pagamentos simulados e lógica de reembolso/cobrança automática ao editar/cancelar reservas.
 
-## Description
+## Funcionalidades
 
-A Laravel-based car rental application.
+- Pesquisa e filtragem de automóveis disponíveis
+- Reserva de automóveis com datas e locais personalizados
+- Autenticação de utilizadores (registo, login, logout)
+- Área do cliente com histórico e gestão de reservas
+- Edição de datas da reserva com recálculo automático do valor
+- Cancelamento de reservas com lógica de reembolso (>48h)
+- Pagamento simulado (Multibanco)
+- Geração de PDF com detalhes da reserva
+- Validação de datas (máx. 7 meses à frente, data de levatamento < devolução)
+- Mensagens dinâmicas de valores a receber/pagar ao editar reservas
+- API Recaptcha
 
-## Setup
+## Instalação
 
-Instructions to set up the project locally.
+1. **Clonar o repositório:**
+   ```bash
+   git clone <repo-url>
+   cd Aluguer_carros
+   ```
+2. **Instalar dependências:**
+   ```bash
+   composer install
+   npm install && npm run dev
+   ```
+3. **Configurar o ambiente:**
+   - Copie `.env.example` para `.env` e configure a base de dados.
+   
+4. **Migrar e popular a base de dados:**
+   ```bash
+   php artisan migrate //+ idealmente correr inserts em MySQL, da pasta app/Script/locacao_carros, para criar dados
+   ```
 
-## Usage
+   Fazem parte dos inserts 2 users diferentes caso nao queira fazer novo registo: 
+   'António Guterres','antonioguterres@anurb.com', "password"
+   'Rosa Mota','rosamota@anurb.com', "password"
+   
+5. **Iniciar o servidor:**
+   ```bash
+   php artisan serve
+   ```
 
-How to use the application.
+## Estrutura Principal
 
-## License
+- `app/Http/Controllers/` - Lógica dos controladores (Reserva, Auth, Cliente, Pagamento)
+- `app/Models/` - Modelos Eloquent (Reserva, BemLocavel, User, etc)
+- `resources/views/` - Vistas Blade (Reserva, Cliente, Home, CarroEscolha etc)
+- `routes/web.php` - Rotas principais da aplicação
+- `database/migrations/` - Estrutura da base de dados 
 
-Specify the license here.
-=======
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Fluxo de Reserva
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+1. O utilizador escolhe o veículo, as datas e localizaçao.
+2. Se não estiver autenticado, é redirecionado para login/registo (os dados da reserva são mantidos).
+3. Após login, pode concluir o pagamento.
+4. Na área do cliente pode editar/cancelar reservas:
+   - Ao editar datas, o valor é recalculado e mostra se há diferença a pagar ou a receber.
+   - Ao cancelar, só há reembolso se faltar mais de 48h para o início.
 
-## About Laravel
+## Observações
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- O sistema está preparado para ser facilmente adaptado a pagamentos reais.
+- O layout é responsivo e moderno.
+- O código segue boas práticas Laravel.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
->>>>>>> d3884d5 (Add/create script, controllers, reserva_table e models)
+## Contacto
+Dúvidas ou sugestões: [brunaanjosalmeida@gmail.com]

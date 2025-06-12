@@ -80,6 +80,7 @@
             color: #547326;
             margin-bottom: 20px;
             font-weight: 700;
+            text-align: center;
         }
         
         .features-section {
@@ -140,7 +141,7 @@
         }
     </style>
 
-<!-- Booking Form Section -->
+<!-- Introdução de locais e datas de levantamento e devoluçao do carro/1os dados do utilizador -->
 <div class="container">
     <div class="booking-container">
         <div class="booking-form">
@@ -179,7 +180,7 @@
     </div>
 </div>
 
-<!-- Description Section -->
+<!-- Secção descritiva -->
 <div class="container">
     <div class="description-section">
         <h3><i class="bi bi-info-circle"></i> Sobre o Nosso Serviço de Aluguer</h3>
@@ -194,7 +195,7 @@
     </div>
 </div>
 
-<!-- Features Section -->
+<!-- Secção das Features  -->
 <div class="container">
     <div class="features-section">
         <div class="row">
@@ -230,7 +231,7 @@
 </div>
 
 
-<!-- Features Section -->
+<!-- Secção das Features 2 -->
 <div class="container">
     <div class="features-section">
         <div class="row">
@@ -265,12 +266,6 @@
     </div>
 </div>
 
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <p><a href="#">Mais Informação</a> | <a href="#">Contactos</a> | <a href="#">Informação Legal</a></p>
-    </div>
-</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -290,16 +285,32 @@
         }
     });
     
-    // Set minimum datetime to current time
+    // Determinar a data/hora atual e definir como mínimo para os inputs de levantamento e devolução
     const now = new Date();
     const currentDateTime = now.toISOString().slice(0, 16);
-    document.getElementById('dataHoraLevantamento').setAttribute('min', currentDateTime);
-    document.getElementById('dataHoraDevolucao').setAttribute('min', currentDateTime);
-    
-    // Update return datetime minimum when pickup datetime changes
-    document.getElementById('dataHoraLevantamento').addEventListener('change', function() {
+    const inputLevantamento = document.getElementById('data_hora_levantamento');
+    const inputDevolucao = document.getElementById('data_hora_devolucao');
+    inputLevantamento.setAttribute('min', currentDateTime);
+    inputDevolucao.setAttribute('min', currentDateTime);
+
+    // Impedir que data de devolução seja feita antes da data do levantamento
+    inputLevantamento.addEventListener('change', function() {
         const pickupDateTime = this.value;
-        document.getElementById('dataHoraDevolucao').setAttribute('min', pickupDateTime);
+        inputDevolucao.setAttribute('min', pickupDateTime);
+        // Se devolução for menor que levantamento, limpa
+        if (inputDevolucao.value && inputDevolucao.value < pickupDateTime) {
+            inputDevolucao.value = '';
+        }
+    });
+    // Garantir a mesma lógica mas ao contrário 
+    inputDevolucao.addEventListener('change', function() {
+        if (inputLevantamento.value && this.value < inputLevantamento.value) {
+            alert('A data/hora de devolução não pode ser anterior à de levantamento.');
+            this.value = '';
+        }
     });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    
 @endsection

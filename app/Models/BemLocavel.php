@@ -77,42 +77,7 @@ class BemLocavel extends Model
         return $query;
     }
 
-    public function scopePorLocalizacao($query, $cidade = null, $filial = null)
-    {
-        if ($cidade || $filial) {
-            return $query->whereHas('localizacoes', function ($q) use ($cidade, $filial) {
-                if ($cidade) {
-                    $q->where('cidade', $cidade);
-                }
-                if ($filial) {
-                    $q->where('filial', $filial);
-                }
-            });
-        }
-        return $query;
-    }
-
-    public function scopePorPreco($query, $precoMin = null, $precoMax = null)
-    {
-        if ($precoMin !== null) {
-            $query->where('preco_diario', '>=', $precoMin);
-        }
-        if ($precoMax !== null) {
-            $query->where('preco_diario', '<=', $precoMax);
-        }
-        return $query;
-    }
-
-  
-
-    public function scopePorPassageiros($query, $minPassageiros = null)
-    {
-        if ($minPassageiros) {
-            return $query->where('numero_passageiros', '>=', $minPassageiros);
-        }
-        return $query;
-    }
-
+    
     public function scopeEmManutencao($query, $incluirManutencao = true)
     {
         if (!$incluirManutencao) {
@@ -206,11 +171,7 @@ class BemLocavel extends Model
             'https://images.unsplash.com/photo-1671342352273-35bf118111b8?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         ];
 
-        // Se existir um campo 'imagem_url' na base de dados, usa-o
-        if (!empty($this->imagem_url)) {
-            return $this->imagem_url;
-        }
-        // Se existir um campo 'imagem' na base de dados, usa-o
+       
         if (!empty($this->imagem)) {
             return $this->imagem;
         }

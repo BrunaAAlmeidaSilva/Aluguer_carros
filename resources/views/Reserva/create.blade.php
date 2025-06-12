@@ -319,7 +319,7 @@
 
     <!-- Main Container -->
     <div class="container">
-        <!-- Date Selection Section -->
+        <!-- Secçao de seleçao de datas -->
         <div class="date-section">
             <div class="date-container">
                 <div class="date-group">
@@ -350,7 +350,7 @@
             @endif
         </div>
 
-        <!-- Reservation Details -->
+        <!-- Detalhes da Reserva -->
         <div class="reservation-details">
             @if($bem)
                 <div>
@@ -474,7 +474,7 @@
             if (dataFim) dataFim.setAttribute('max', maxDateStr);
         });
 
-        // Update dates and calculate total
+        // Atualizaçao de datas e cálculo de preços
         function updateReservation() {
             const checkinDate = new Date(document.getElementById('checkin').value);
             const checkoutDate = new Date(document.getElementById('checkout').value);
@@ -483,7 +483,7 @@
                 const timeDiff = checkoutDate.getTime() - checkinDate.getTime();
                 const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
                 
-                // Update period display
+                // Atualizar tempo de display
                 const formatDate = (date) => {
                     return date.toLocaleDateString('pt-PT', { 
                         day: '2-digit', 
@@ -496,7 +496,7 @@
                     `${formatDate(checkinDate)} - ${formatDate(checkoutDate)}`;
                 document.getElementById('days-count').textContent = `${daysDiff} dias`;
                 
-                // Calculate prices
+                // Calcular preços
                 const dailyRate = {{ $bem->preco_diario ?? 55.00 }};
                 const subtotal = daysDiff * dailyRate;
                 const serviceFee = 25.00;
@@ -507,7 +507,7 @@
             }
         }
 
-        // Event listeners for date changes
+        // Evento listeners para mudar datas
         document.getElementById('checkin').addEventListener('change', updateReservation);
         document.getElementById('checkout').addEventListener('change', updateReservation);
 
@@ -517,7 +517,7 @@
             // window.location.href = '/login';
         }
 
-        // Initialize
+        // Inicializar a reserva com as datas atuais
         updateReservation();
     </script>
 @endsection

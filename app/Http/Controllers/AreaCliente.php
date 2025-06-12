@@ -61,6 +61,7 @@ class AreaCliente extends Controller
         $reserva->status = 'cancelada';
         $reserva->valor_devolucao = $valorDevolucao;
         $reserva->save();
+        
         // Atualizar os totais para a view (AJAX ou redirect com recálculo)
         if ($request->ajax()) {
             $user = Auth::user();

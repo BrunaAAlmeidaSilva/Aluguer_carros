@@ -69,7 +69,7 @@ class ReservaController extends Controller
 
     public function store(Request $request)
     {
-        // Validação dos dados do formulário (ajusta conforme necessário)
+        // Validação dos dados do formulário 
         $validated = $request->validate([
             'bem_id' => 'required|exists:bens_locaveis,id',
             'data_inicio' => ['required','date','after_or_equal:today', function($attribute, $value, $fail) {
@@ -110,6 +110,7 @@ class ReservaController extends Controller
         // Guarda na sessão para o fluxo de pagamento
         session(['reservation_in_progress' => true, 'reserva_id' => $reserva->id]);
 
+
         // Redireciona para login se não autenticado, ou para pagamento se já autenticado
         if (!auth()->check()) {
             return redirect()->route('login');
@@ -131,7 +132,6 @@ class ReservaController extends Controller
     public function edit($id)
     {
         $reserva = \App\Models\Reserva::with(['bemLocavel.marca', 'bemLocavel.localizacoes'])->findOrFail($id);
-        // Aqui podes adicionar lógica para garantir que só o dono pode editar
         if (auth()->id() !== $reserva->user_id) {
             abort(403, 'Não autorizado.');
         }
@@ -162,6 +162,7 @@ class ReservaController extends Controller
         }
         $reserva->data_inicio = $validated['data_inicio'];
         $reserva->data_fim = $validated['data_fim'];
+
         // Recalcular preço total ao editar datas
         $dias = \Carbon\Carbon::parse($validated['data_inicio'])->diffInDays(\Carbon\Carbon::parse($validated['data_fim'])) + 1;
         $dias = max(1, $dias);
@@ -169,6 +170,7 @@ class ReservaController extends Controller
         $bem = $reserva->bemLocavel;
         $subtotal = $bem ? $dias * $bem->preco_diario : 0;
         $total = $subtotal + $taxa_servico;
+        
         // Calcular diferença de valor (para mostrar ao cliente)
         $diferenca_valor = $total - $reserva->getOriginal('preco_total');
         $reserva->preco_total = $total;

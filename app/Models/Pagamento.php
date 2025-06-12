@@ -32,14 +32,6 @@ class Pagamento extends Model
     }
 
     /**
-     * Verificar se o pagamento foi processado com sucesso
-     */
-    public function isProcessado()
-    {
-        return $this->status === 'pago';
-    }
-
-    /**
      * Scope para pagamentos processados
      */
     public function scopeProcessados($query)
@@ -55,11 +47,4 @@ class Pagamento extends Model
         return $query->where('status', 'pendente');
     }
 
-    /**
-     * Scope por método de pagamento
-     */
-    public function scopeMetodo($query, $metodo)
-    {
-        return $query->where('metodo_pagamento', $metodo);
-    }
 }

@@ -4,9 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{DashboardController,HomeController,BemLocavelController,
     UserController,ReservaController,PagamentoController,AreaCliente};
 
-
-
-
 // Página inicial: Dashboard
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -29,49 +26,45 @@ Route::get('/carros-escolha', [BemLocavelController::class, 'carrosEscolha'])->n
 
 
 
-//Route::get('/carros', [BemLocavelController::class, 'index'])->name('bens.index');
-// Página de detalhes de um veículo
-Route::get('/carros/{id}', [BemLocavelController::class, 'show'])->name('carros.show');
+
+// // Página de detalhes de um veículo
+// Route::get('/carros/{id}', [BemLocavelController::class, 'show'])->name('carros.show');
 // Buscar veículos com filtros
 Route::get('/carros/search', [BemLocavelController::class, 'search'])->name('carros.search');
 
-//Route::get('/reservas/{bem}', [ReservaController::class, 'create'])->name('reservas.create');
 Route::get('/reservas/{bem}', [ReservaController::class, 'create'])->name('reservas.create');
 
 //Rota PDF para imprimir reservas
 Route::get('/reservas/{reserva}/pdf', [\App\Http\Controllers\ReservaController::class, 'gerarPdf'])->name('reservas.pdf');
 
-
-
 // Rotas de autenticação e perfil
 require __DIR__.'/auth.php';
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [UserController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [UserController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [UserController::class, 'destroy'])->name('profile.destroy');
+Route::middleware('auth')->group(function () 
+{
+Route::get('/profile', [UserController::class, 'edit'])->name('profile.edit');
+Route::patch('/profile', [UserController::class, 'update'])->name('profile.update');
+Route::delete('/profile', [UserController::class, 'destroy'])->name('profile.destroy');
 
-    // Dashboard autenticado (opcional, se quiseres dashboard diferente para users autenticados)
-    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    // Reservas
-    Route::prefix('reservas')->name('reservas.')->group(function () {
-        Route::get('/', [ReservaController::class, 'index'])->name('index');
-        
-        Route::post('/store', [ReservaController::class, 'store'])->name('store');
-        Route::get('/{reserva}', [ReservaController::class, 'show'])->name('show');
-        Route::patch('/{reserva}/cancelar', [ReservaController::class, 'cancel'])->name('cancel');
-        // Editar reserva
-        Route::get('/reservas/{reserva}/editar', [\App\Http\Controllers\ReservaController::class, 'edit'])->name('reservas.edit');
-        // Atualizar reserva (PATCH)
-        Route::patch('/reservas/{reserva}/atualizar', [\App\Http\Controllers\ReservaController::class, 'update'])->name('reservas.update');
-        // Permitir AJAX via POST + _method=PATCH
-        Route::post('/reservas/{reserva}/atualizar', [\App\Http\Controllers\ReservaController::class, 'update']);
+ // Reservas
+Route::prefix('reservas')->name('reservas.')->group(function () 
+    {
+    Route::get('/', [ReservaController::class, 'index'])->name('index');
+    Route::post('/store', [ReservaController::class, 'store'])->name('store');
+    Route::get('/{reserva}', [ReservaController::class, 'show'])->name('show');
+    Route::patch('/{reserva}/cancelar', [ReservaController::class, 'cancel'])->name('cancel');
+// Editar reserva
+    Route::get('/reservas/{reserva}/editar', [\App\Http\Controllers\ReservaController::class, 'edit'])->name('reservas.edit');
+// Atualizar reserva (PATCH)
+    Route::patch('/reservas/{reserva}/atualizar', [\App\Http\Controllers\ReservaController::class, 'update'])->name('reservas.update');
+// Permitir AJAX via POST + _method=PATCH
+    Route::post('/reservas/{reserva}/atualizar', [\App\Http\Controllers\ReservaController::class, 'update']);
         
     });
 
-    // Pagamentos
-    Route::prefix('pagamentos')->name('pagamentos.')->group(function () {
+// Pagamentos
+    Route::prefix('pagamentos')->name('pagamentos.')->group(function () 
+    {
         Route::get('/{reserva}', [PagamentoController::class, 'show'])->name('show');
         Route::post('/{reserva}/processar', [PagamentoController::class, 'process'])->name('process');
         Route::get('/{reserva}/callback', [PagamentoController::class, 'callback'])->name('callback');

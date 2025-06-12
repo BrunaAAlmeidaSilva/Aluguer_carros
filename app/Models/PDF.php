@@ -6,7 +6,6 @@ class PDF
 {
     /**
      * Gera um array de dados relevantes para PDF de uma reserva.
-     * Pode ser chamado a partir do controller para passar para a view do PDF.
      */
     public static function dadosReserva(Reserva $reserva)
     {
@@ -28,7 +27,9 @@ class PDF
             'entidade_multibanco' => $reserva->entidade_multibanco,
             'referencia_multibanco' => $reserva->referencia_multibanco,
             'status' => $reserva->status,
-            'observacoes' => $reserva->observacoes,
+            'local_levantamento' => $reserva->local_levantamento,
+            'local_devolucao' => $reserva->local_devolucao,
+            'valor_devolucao' => $reserva->valor_devolucao ? number_format($reserva->valor_devolucao, 2, ',', '.') : '0,00',
         ];
     }
 }

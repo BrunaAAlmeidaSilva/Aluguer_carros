@@ -26,14 +26,7 @@ class Localizacao extends Model
         return $this->belongsTo(BemLocavel::class, 'bem_locavel_id');
     }
 
-    /**
-     * Scope para filtrar por cidade
-     */
-    public function scopeCidade($query, $cidade)
-    {
-        return $query->where('cidade', 'like', '%' . $cidade . '%');
-    }
-
+   
     /**
      * Scope para filtrar por filial
      */
