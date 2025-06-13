@@ -123,6 +123,21 @@ class BemLocavel extends Model
         
         return $this->preco_diario * $dias;
     }
+    
+public function scopePorLocalizacao($query, $cidade = null, $filial = null)
+    {
+        if ($cidade || $filial) {
+            return $query->whereHas('localizacoes', function ($q) use ($cidade, $filial) {
+                if ($cidade) {
+                    $q->where('cidade', $cidade);
+                }
+                if ($filial) {
+                    $q->where('filial', $filial);
+                }
+            });
+        }
+        return $query;
+    }
 
     public function getImagemAttribute()
     {
