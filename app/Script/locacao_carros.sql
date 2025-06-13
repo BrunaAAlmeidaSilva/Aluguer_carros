@@ -84,7 +84,7 @@ CREATE TABLE pagamentos (
 
 
 
---Inserção de dados
+--Inserção de dados 
 
 INSERT INTO tipo_bens (id, nome) VALUES (1, 'Carro');
 

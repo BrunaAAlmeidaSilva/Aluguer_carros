@@ -14,7 +14,7 @@ Este projeto é um sistema de aluguer de automóveis desenvolvido em Laravel, co
 - Geração de PDF com detalhes da reserva
 - Validação de datas (máx. 7 meses à frente, data de levatamento < devolução)
 - Mensagens dinâmicas de valores a receber/pagar ao editar reservas
-- API Recaptcha
+- API reCaptcha
 
 ## Instalação
 
@@ -33,10 +33,11 @@ Este projeto é um sistema de aluguer de automóveis desenvolvido em Laravel, co
    
 4. **Migrar e popular a base de dados:**
    ```bash
-   php artisan migrate //+ idealmente correr inserts em MySQL, da pasta app/Script/locacao_carros, para criar dados
+   php artisan migrate //+ idealmente correr inserts em MySQL, da pasta app/Script/locacao_carros, para popular a BD
    ```
 
    Fazem parte dos inserts 2 users diferentes caso nao queira fazer novo registo: 
+
    'António Guterres','antonioguterres@anurb.com', "password"
    'Rosa Mota','rosamota@anurb.com', "password"
    
@@ -44,6 +45,10 @@ Este projeto é um sistema de aluguer de automóveis desenvolvido em Laravel, co
    ```bash
    php artisan serve
    ```
+   +
+   ```bash
+   composer run dev
+   ``` 
 
 ## Estrutura Principal
 
@@ -55,7 +60,7 @@ Este projeto é um sistema de aluguer de automóveis desenvolvido em Laravel, co
 
 ## Fluxo de Reserva
 
-1. O utilizador escolhe o veículo, as datas e localizaçao.
+1. O utilizador escolhe as localizações, datas e o veículo.
 2. Se não estiver autenticado, é redirecionado para login/registo (os dados da reserva são mantidos).
 3. Após login, pode concluir o pagamento.
 4. Na área do cliente pode editar/cancelar reservas:

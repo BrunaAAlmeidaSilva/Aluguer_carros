@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{DashboardController,HomeController,BemLocavelController,
-    UserController,ReservaController,PagamentoController,AreaCliente};
+    ReservaController,PagamentoController,AreaCliente,ProfileController};
 
 // Página inicial: Dashboard
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -24,11 +24,6 @@ Route::get('/bens-locaveis/detalhes/{id}', [BemLocavelController::class, 'detalh
 // Página principal CarrosEscolha da grid de veículos
 Route::get('/carros-escolha', [BemLocavelController::class, 'carrosEscolha'])->name('carrosEscolha.index');
 
-
-
-
-// // Página de detalhes de um veículo
-// Route::get('/carros/{id}', [BemLocavelController::class, 'show'])->name('carros.show');
 // Buscar veículos com filtros
 Route::get('/carros/search', [BemLocavelController::class, 'search'])->name('carros.search');
 
@@ -42,9 +37,9 @@ require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () 
 {
-Route::get('/profile', [UserController::class, 'edit'])->name('profile.edit');
-Route::patch('/profile', [UserController::class, 'update'])->name('profile.update');
-Route::delete('/profile', [UserController::class, 'destroy'])->name('profile.destroy');
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
  // Reservas
 Route::prefix('reservas')->name('reservas.')->group(function () 
